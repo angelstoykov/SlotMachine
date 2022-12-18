@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlotMachine.Common.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,14 @@ namespace SlotMachine.Models
 
 		public void Deposit(decimal amount)
 		{
-			this.Balance += amount;
+			if (amount > 0)
+			{
+				this.Balance += amount;
+			}
+			else
+			{
+				throw new ArgumentException(ExceptionMessages.CAN_NOT_ADD_ZERO_DEPOSIT);
+			}
 		}
 
 		public decimal WithdrawBet(decimal amount)

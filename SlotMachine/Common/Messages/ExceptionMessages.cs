@@ -8,5 +8,6 @@ namespace SlotMachine.Common.Messages
 {
     internal class ExceptionMessages
     {
+        public const string CAN_NOT_ADD_ZERO_DEPOSIT = "You can not add zero currency to your wallet.";
     }
 }

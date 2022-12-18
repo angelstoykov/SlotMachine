@@ -36,20 +36,22 @@ namespace SlotMachine.Core
         {
             var player = new Player("Angel");
 
-            writer.WriteLine(OutputMessages.PROMPT_TO_DEPOSIT);
 
-            var success = decimal.TryParse(reader.ReadLine(), out var amountToDeposit);
-
-            if (success)
+            while (player.Wallet.Balance == 0m)
             {
-                try
+                writer.WriteLine(OutputMessages.PROMPT_TO_DEPOSIT);
+
+                var success = decimal.TryParse(reader.ReadLine(), out var amountToDeposit);
+                if (success)
                 {
-                    player.Deposit(amountToDeposit);
-                }
-                catch (ArgumentException e)
-                {
-                    writer.WriteLine(e.Message);
-                    return;
+                    try
+                    {
+                        player.Deposit(amountToDeposit);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        writer.WriteLine(e.Message);
+                    }
                 }
             }
 
