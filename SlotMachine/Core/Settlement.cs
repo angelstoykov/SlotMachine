@@ -35,5 +35,10 @@ namespace SlotMachine.Core
 
             return totalProfitCoefficient;
         }
+
+        public static decimal CalculateProfit(decimal bet, decimal profitCoefficient)
+        {
+            return Math.Round(bet * profitCoefficient, 2);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlotMachine.Common.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,15 +22,27 @@ namespace SlotMachine.Models.Account
 
         public decimal Bet(decimal amount)
         {
-            if (this.Wallet.Balance >= amount && amount > 0)
+            if (amount < 0)
+            {
+                throw new Exception(ExceptionMessages.CAN_NOT_BET_NEGATIVE_AMOUNT);
+            }
+
+            if (this.Wallet.Balance >= amount)
             {
                 return this.Wallet.WithdrawBet(amount);
             }
-
-            throw new Exception($"Unsufficiend funds for that bet in your wallet. Your balance is: {this.Wallet.Balance}");
+            else
+            {
+                throw new Exception(string.Format(ExceptionMessages.UNSUFFICIANT_FUNDS, this.Wallet.Balance));
+            }
         }
 
         public void Deposit(decimal amount)
+        {
+            this.Wallet.Deposit(amount);
+        }
+
+        public void DepositFromWinningBet(decimal amount)
         {
             this.Wallet.Deposit(amount);
         }

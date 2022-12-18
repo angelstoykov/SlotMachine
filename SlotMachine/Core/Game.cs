@@ -60,12 +60,12 @@ namespace SlotMachine.Core
                 writer.WriteLine(OutputMessages.PROMPT_TO_BET);
                 var isValidAmount = decimal.TryParse(reader.ReadLine(), out var bet);
 
-                if (isValidAmount && player.Wallet.Balance > 0 && bet > 0)
+                if (isValidAmount && player.Wallet.Balance > 0)
                 {
                     try
                     {
                         // Bet
-                        var currentBalance = player.Bet(bet);
+                        var currentBalance = player.Bet(bet); ;
 
                         // Create result
                         var slotSpine = CreateSlotSpin();
@@ -77,7 +77,14 @@ namespace SlotMachine.Core
                         }
 
                         // Evauate result
-                        EvaluateResult(slotSpine);
+                        var profitCoefficient = EvaluateResult(slotSpine);
+
+                        if (profitCoefficient > 0m)
+                        {
+                            var winningBet = Settlement.CalculateProfit(bet, profitCoefficient);
+                            player.DepositFromWinningBet(winningBet);
+                            writer.WriteLine($"You have won {winningBet:F2}. Your balance is {player.Wallet.Balance:F2}");
+                        }
                     }
                     catch (Exception e)
                     {
@@ -89,34 +96,29 @@ namespace SlotMachine.Core
             writer.WriteLine(OutputMessages.ZERO_BALANCE_PROMPT_TO_DEPOSIT);
         }
 
-        private void EvaluateResult(List<string> slotSpine)
+        private decimal EvaluateResult(List<string> slotSpine)
         {
-            var coef1 = 0m;
-            var coef2 = 0m;
+            var coefficientOfSameChars = 0m;
+            var coefficientOfWildCardAndChar = 0m;
 
             foreach (var line in slotSpine)
             {
                 var areAllCharsSame = AreAllCharsSame(line);
 
+                // Calculate profit coefficient if all chars are same
                 if (areAllCharsSame)
                 {
                     writer.WriteLine(string.Format(OutputMessages.ALL_CHARS_ARE_SAME, line));
-                    // Calculate profit for all chars are same
-                    coef1 += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
+                    coefficientOfSameChars += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
                 }
+                // Calculate profit coefficient if there is wildcard
                 else if (IsStringContainsAsterix(line))
                 {
-                    var lineWithoutAsterix = line.Replace("*", string.Empty);
-                    var areTheRestCharsSame = AreAllCharsSame(lineWithoutAsterix);
-
-                    if (areTheRestCharsSame)
-                    {
-                        writer.WriteLine(string.Format(OutputMessages.LINE_WITH_ASTERIX_AND_SAME_LETTERS, line));
-                        coef2 += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
-                    }
+                    writer.WriteLine(string.Format(OutputMessages.LINE_WITH_ASTERIX_AND_SAME_LETTERS, line));
+                    coefficientOfWildCardAndChar += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
                 }
             }
-            writer.WriteLine(coef1+ " " + coef2);
+            return (coefficientOfSameChars + coefficientOfWildCardAndChar);
         }
 
         private bool IsStringContainsAsterix(string line)
