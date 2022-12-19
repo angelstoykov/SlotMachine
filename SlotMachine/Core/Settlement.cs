@@ -19,16 +19,16 @@ namespace SlotMachine.Core
                 switch (ch)
                 {
                     case 'A':
-                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "A").WinningCoefficient; ;
+                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "A").WinningCoefficient;
                         break;
                     case 'B':
-                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "B").WinningCoefficient; ;
+                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "B").WinningCoefficient;
                         break;
                     case 'P':
-                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "P").WinningCoefficient; ;
+                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "P").WinningCoefficient;
                         break;
                     case '*':
-                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "*").WinningCoefficient; ;
+                        totalProfitCoefficient += prizeItems.First(pi => pi.Representation == "*").WinningCoefficient;
                         break;
                 }
             }
