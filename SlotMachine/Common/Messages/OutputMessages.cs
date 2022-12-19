@@ -14,8 +14,8 @@ namespace SlotMachine.Common.Messages
 
         public const string ZERO_BALANCE_PROMPT_TO_DEPOSIT = "Your balance cannot allow you continue playing.\nConsider deposit new amount and try again.";
 
-        public const string ALL_CHARS_ARE_SAME = "Line with same chars {0}";
+        public const string WINNING_LINE = "The winning line is: {0}";
 
-        public const string LINE_WITH_ASTERIX_AND_SAME_LETTERS = "Line with contains ASTERIX/TWO asterix and one/two same letters: {0}";
+        public const string WINNING_MESSAGE = "Winning coefFICIENT: {0:F2}. You have won {1:F2}. Your balance is {2:F2}";
     }
 }

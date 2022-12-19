@@ -83,7 +83,7 @@ namespace SlotMachine.Core
                         {
                             var winningBet = Settlement.CalculateProfit(bet, profitCoefficient);
                             player.DepositFromWinningBet(winningBet);
-                            writer.WriteLine($"You have won {winningBet:F2}. Your balance is {player.Wallet.Balance:F2}");
+                            writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, winningBet, player.Wallet.Balance));
                         }
                     }
                     catch (Exception e)
@@ -98,27 +98,20 @@ namespace SlotMachine.Core
 
         private decimal EvaluateResult(List<string> slotSpine)
         {
-            var coefficientOfSameChars = 0m;
-            var coefficientOfWildCardAndChar = 0m;
+            var coefficient = 0m;
 
             foreach (var line in slotSpine)
             {
-                var areAllCharsSame = AreAllCharsSame(line);
 
                 // Calculate profit coefficient if all chars are same
-                if (areAllCharsSame)
+                if (AreAllCharsSame(line) || IsStringContainsAsterix(line))
                 {
-                    writer.WriteLine(string.Format(OutputMessages.ALL_CHARS_ARE_SAME, line));
-                    coefficientOfSameChars += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
-                }
-                // Calculate profit coefficient if there is wildcard
-                else if (IsStringContainsAsterix(line))
-                {
-                    writer.WriteLine(string.Format(OutputMessages.LINE_WITH_ASTERIX_AND_SAME_LETTERS, line));
-                    coefficientOfWildCardAndChar += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
+                    writer.WriteLine(string.Format(OutputMessages.WINNING_LINE, line));
+                    coefficient += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
                 }
             }
-            return (coefficientOfSameChars + coefficientOfWildCardAndChar);
+
+            return coefficient;
         }
 
         private bool IsStringContainsAsterix(string line)
@@ -159,7 +152,7 @@ namespace SlotMachine.Core
                 if (prizeItemRepresentation == "A" && prizeItemProbabilityToAppear <= randomNumber)
                 {
                     slotLine += prizeItemRepresentation;
-                } 
+                }
                 else if (prizeItemRepresentation == "B" && prizeItemProbabilityToAppear <= randomNumber)
                 {
                     slotLine += prizeItemRepresentation;
