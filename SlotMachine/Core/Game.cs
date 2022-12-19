@@ -15,27 +15,20 @@ namespace SlotMachine.Core
 {
     internal class Game : IGame
     {
-        private PrizeItemBase[] prizeItems =
-            {
-                new Apple("Apple", "A"),
-                new Banana("Banana", "B"),
-                new Pineapple("Pineapple", "P"),
-                new WildCard("WildCard", "*")
-            };
-
-        private IWriter writer;
         private IReader reader;
+        private IWriter writer;
+        private PrizeItemBase[] prizeItems;
 
         public Game()
         {
-            this.writer = new Writer();
             this.reader = new Reader();
+            this.writer = new Writer();
+            this.prizeItems = PrizeGenerator.GeneratePrizeItems();
         }
 
         public void Play()
         {
             var player = new Player("Angel");
-
 
             while (player.Wallet.Balance == 0m)
             {
@@ -102,8 +95,6 @@ namespace SlotMachine.Core
 
             foreach (var line in slotSpine)
             {
-
-                // Calculate profit coefficient if all chars are same
                 if (AreAllCharsSame(line) || IsStringContainsAsterix(line))
                 {
                     writer.WriteLine(string.Format(OutputMessages.WINNING_LINE, line));
