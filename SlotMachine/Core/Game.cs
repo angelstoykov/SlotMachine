@@ -4,12 +4,6 @@ using SlotMachine.IO;
 using SlotMachine.IO.Contracts;
 using SlotMachine.Models.Account;
 using SlotMachine.Models.PrizeItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlotMachine.Core
 {
@@ -25,6 +19,8 @@ namespace SlotMachine.Core
             this.writer = new Writer();
             this.prizeItems = PrizeGenerator.GeneratePrizeItems();
         }
+
+        public PrizeItemBase[] PrizeItems { get => this.prizeItems; }
 
         public void Play()
         {
@@ -70,13 +66,16 @@ namespace SlotMachine.Core
                         }
 
                         // Evauate result
-                        var profitCoefficient = EvaluateResult(slotSpine);
+                        var settlement = new Settlement();
+                        var winningLines = settlement.EvaluateResult(slotSpine);
 
-                        if (profitCoefficient > 0m)
+                        if (winningLines.Count > 0)
                         {
-                            var winningBet = Settlement.CalculateProfit(bet, profitCoefficient);
-                            player.DepositFromWinningBet(winningBet);
-                            writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, winningBet, player.Wallet.Balance));
+                            var profitCoefficient = settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
+                            var profit = settlement.CalculateProfit(bet, winningLines, PrizeItems);
+
+                            player.DepositFromWinningBet(profit);
+                            writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit, player.Wallet.Balance));
                         }
                     }
                     catch (Exception e)
@@ -87,32 +86,6 @@ namespace SlotMachine.Core
             }
 
             writer.WriteLine(OutputMessages.ZERO_BALANCE_PROMPT_TO_DEPOSIT);
-        }
-
-        private decimal EvaluateResult(List<string> slotSpine)
-        {
-            var coefficient = 0m;
-
-            foreach (var line in slotSpine)
-            {
-                if (AreAllCharsSame(line) || IsStringContainsAsterix(line))
-                {
-                    writer.WriteLine(string.Format(OutputMessages.WINNING_LINE, line));
-                    coefficient += Settlement.CalculateWinningLineCoefficient(line, prizeItems);
-                }
-            }
-
-            return coefficient;
-        }
-
-        private bool IsStringContainsAsterix(string line)
-        {
-            return line.Contains("*");
-        }
-
-        private bool AreAllCharsSame(string line)
-        {
-            return line.All(c => c == line[0]);
         }
 
         private List<string> CreateSlotSpin()
@@ -137,8 +110,8 @@ namespace SlotMachine.Core
                 var index = GenerateIndex();
                 var randomNumber = GenerateRandomNumberInRange(1, 101);
 
-                var prizeItemRepresentation = prizeItems[index].Representation;
-                var prizeItemProbabilityToAppear = prizeItems[index].ProbabilityToAppear;
+                var prizeItemRepresentation = PrizeItems[index].Representation;
+                var prizeItemProbabilityToAppear = PrizeItems[index].ProbabilityToAppear;
 
                 if (prizeItemRepresentation == "A" && prizeItemProbabilityToAppear <= randomNumber)
                 {
@@ -165,7 +138,7 @@ namespace SlotMachine.Core
         {
             var random = new Random();
 
-            return random.Next(0, prizeItems.Length);
+            return random.Next(0, PrizeItems.Length);
         }
 
         private int GenerateRandomNumberInRange(int min, int max)
