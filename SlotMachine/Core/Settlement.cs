@@ -1,16 +1,19 @@
-﻿using SlotMachine.Core.Contracts;
+﻿using SlotMachine.IO;
+using SlotMachine.IO.Contracts;
 using SlotMachine.Models.PrizeItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlotMachine.Core
 {
-    internal static class Settlement
+    internal class Settlement
     {
-        public static decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
+        private IWriter writer = new Writer();
+
+        public Settlement()
+        {
+            this.writer = new Writer();
+        }
+
+        public decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
         {
             var totalProfitCoefficient = 0m;
 
@@ -36,9 +39,53 @@ namespace SlotMachine.Core
             return totalProfitCoefficient;
         }
 
-        public static decimal CalculateProfit(decimal bet, decimal profitCoefficient)
+        public List<string> EvaluateResult(List<string> slotSpine)
         {
+            var winningLines = new List<string>();
+
+            foreach (var line in slotSpine)
+            {
+                if (HasWinningLine(line))
+                {
+                    winningLines.Add(line);
+                }
+            }
+
+            return winningLines;
+        }
+
+        private bool HasWinningLine(string line)
+        {
+            return AreAllCharsSame(line) || IsLineContainsAsterix(line);
+        }
+
+        private bool IsLineContainsAsterix(string line)
+        {
+            return line.Contains("*");
+        }
+
+        private bool AreAllCharsSame(string line)
+        {
+            return line.All(c => c == line[0]);
+        }
+
+        public decimal CalculateProfit(decimal bet, List<string> winningLines, PrizeItemBase[] prizeItems)
+        {
+            var profitCoefficient = CalculateProfitCoeficient(winningLines, prizeItems);
+
             return Math.Round(bet * profitCoefficient, 2);
+        }
+
+        public decimal CalculateProfitCoeficient(List<string> winningLines, PrizeItemBase[] prizeItems)
+        {
+            var profitCoefficient = 0m;
+
+            foreach (var line in winningLines)
+            {
+                profitCoefficient += CalculateWinningLineCoefficient(line, prizeItems);
+            }
+
+            return profitCoefficient;
         }
     }
 }
