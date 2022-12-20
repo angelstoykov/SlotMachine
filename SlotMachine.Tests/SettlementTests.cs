@@ -12,11 +12,56 @@ namespace SlotMachine.Tests
         [Test]
         public void SettlementEvaluateResultTest()
         {
-            var actualLines = new List<string> { "AA*" };
+            var actualLinesWithSameLetters = GetWinningLinesSameLetters();
+            var actualWinningLinesWithAsterix = GetWinningLinesWithAsterix();
+            var actualNoWinningLines = GetNoWinningLines();
 
-            var expectedLines = Settlement.EvaluateResult(actualLines);
+            var expectedLinesWithSameLetters = Settlement.EvaluateResult(actualLinesWithSameLetters);
+            var expectedLinesWithWithAsterix = Settlement.EvaluateResult(actualWinningLinesWithAsterix);
+            var expectedNoWinningLinesCount = Settlement.EvaluateResult(actualNoWinningLines).Count;
 
-            CollectionAssert.AreEqual(expectedLines, actualLines);
+            CollectionAssert.AreEqual(expectedLinesWithSameLetters, actualLinesWithSameLetters);
+            Assert.That(expectedLinesWithSameLetters.Count, Is.EqualTo(actualLinesWithSameLetters.Count));
+
+            CollectionAssert.AreEqual(expectedLinesWithWithAsterix, actualWinningLinesWithAsterix);
+            Assert.That(expectedLinesWithWithAsterix.Count, Is.EqualTo(actualWinningLinesWithAsterix.Count));
+
+            // There is no winning line
+            Assert.That(expectedNoWinningLinesCount, Is.EqualTo(0));
+        }
+
+        private List<string> GetWinningLinesSameLetters()
+        {
+            return new List<string>
+            {
+                "AAA",
+                "BBB",
+                "PPP",
+                "***"
+            };
+        }
+
+        private List<string> GetWinningLinesWithAsterix()
+        {
+            return new List<string>
+            {
+                "AA*",
+                "B*B",
+                "*PP",
+                "**A",
+                "B**"
+            };
+        }
+
+        private List<string> GetNoWinningLines()
+        {
+            return new List<string>
+            {
+                "ABP",
+                "B*A",
+                "*PB",
+                "fndhsjak"
+            };
         }
     }
 }

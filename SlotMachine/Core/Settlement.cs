@@ -49,7 +49,17 @@ namespace SlotMachine.Core
 
         private static bool HasWinningLine(string line)
         {
-            return AreAllCharsSame(line) || IsLineContainsAsterix(line);
+            return AreAllCharsSame(line) || IsLineWinningWithWildCard(line);
+        }
+
+        private static bool IsLineWinningWithWildCard(string line)
+        {
+            if (IsLineContainsAsterix(line))
+            {
+                var lineWithoutAsterix = line.Replace("*", "");
+                return AreAllCharsSame(lineWithoutAsterix);
+            }
+            return false;
         }
 
         private static bool IsLineContainsAsterix(string line)
