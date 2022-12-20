@@ -10,6 +10,6 @@
 
         public const string WINNING_LINE = "The winning line is: {0}";
 
-        public const string WINNING_MESSAGE = "Winning coefFICIENT: {0:F2}. You have won {1:F2}. Your balance is {2:F2}";
+        public const string WINNING_MESSAGE = "Winning coefficient: {0:F2}. You have won {1:F2}. Your balance is {2:F2}";
     }
 }
