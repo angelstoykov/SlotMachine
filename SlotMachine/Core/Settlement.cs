@@ -6,7 +6,7 @@ namespace SlotMachine.Core
 {
     public static class Settlement
     {
-        public static decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
+        private static decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
         {
             var totalProfitCoefficient = 0m;
 
