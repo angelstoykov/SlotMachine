@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlotMachine.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,13 @@ namespace SlotMachine.Tests
     internal class SettlementTests
     {
         [Test]
-        public void SettlementConstructorTest()
+        public void SettlementEvaluateResultTest()
         {
+            var actualLines = new List<string> { "AA*" };
 
+            var expectedLines = Settlement.EvaluateResult(actualLines);
+
+            CollectionAssert.AreEqual(expectedLines, actualLines);
         }
     }
 }

@@ -66,13 +66,12 @@ namespace SlotMachine.Core
                         }
 
                         // Evauate result
-                        var settlement = new Settlement();
-                        var winningLines = settlement.EvaluateResult(slotSpine);
+                        var winningLines = Settlement.EvaluateResult(slotSpine);
 
                         if (winningLines.Count > 0)
                         {
-                            var profitCoefficient = settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
-                            var profit = settlement.CalculateProfit(bet, winningLines, PrizeItems);
+                            var profitCoefficient = Settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
+                            var profit = Settlement.CalculateProfit(bet, winningLines, PrizeItems);
 
                             player.DepositFromWinningBet(profit);
                             writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit, player.Wallet.Balance));
