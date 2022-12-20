@@ -6,13 +6,6 @@ namespace SlotMachine.Core
 {
     internal class Settlement
     {
-        private IWriter writer = new Writer();
-
-        public Settlement()
-        {
-            this.writer = new Writer();
-        }
-
         public decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
         {
             var totalProfitCoefficient = 0m;
