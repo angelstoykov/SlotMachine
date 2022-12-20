@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlotMachine.Models.PrizeItems
 {
-    internal class WildCard : PrizeItemBase
+    public class WildCard : PrizeItemBase
     {
         private const decimal WINNING_COEFFICIENT = 0m;
         private const int PROBABILITY_TO_APPEAR = 5; // should appear in 5%

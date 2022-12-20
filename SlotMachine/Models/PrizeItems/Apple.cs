@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlotMachine.Models.PrizeItems
 {
-    internal class Apple : PrizeItemBase
+    public class Apple : PrizeItemBase
     {
         public const decimal WINNING_COEFFICIENT = 0.4m;
         public const int PROBABILITY_TO_APPEAR = 45; // 45% should appear in 45%

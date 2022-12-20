@@ -37,7 +37,7 @@ namespace SlotMachine.Models
 			}
 			else
 			{
-				throw new ArgumentException(ExceptionMessages.CAN_NOT_ADD_ZERO_DEPOSIT);
+				throw new ArgumentException(ExceptionMessages.CAN_NOT_ADD_ZERO_OR_NEGATIVE_DEPOSIT);
 			}
 		}
 

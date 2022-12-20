@@ -1,6 +1,6 @@
 ﻿namespace SlotMachine.Models.PrizeItems
 {
-    internal abstract class PrizeItemBase
+    public abstract class PrizeItemBase
     {
         public PrizeItemBase(string name, string representation, int probabilityToAppear, decimal winningCoefficient)
         {

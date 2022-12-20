@@ -97,3 +97,9 @@ C:\Test\SlotMachine\SlotMachine.Tests\obj\Debug\net6.0\refint\SlotMachine.Tests.
 C:\Test\SlotMachine\SlotMachine.Tests\obj\Debug\net6.0\SlotMachine.Tests.pdb
 C:\Test\SlotMachine\SlotMachine.Tests\obj\Debug\net6.0\SlotMachine.Tests.genruntimeconfig.cache
 C:\Test\SlotMachine\SlotMachine.Tests\obj\Debug\net6.0\ref\SlotMachine.Tests.dll
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\CoverletSourceRootsMapping
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\SlotMachine.deps.json
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\SlotMachine.runtimeconfig.json
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\SlotMachine.exe
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\SlotMachine.dll
+C:\Test\SlotMachine\SlotMachine.Tests\bin\Debug\net6.0\SlotMachine.pdb

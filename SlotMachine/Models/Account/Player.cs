@@ -9,7 +9,21 @@ namespace SlotMachine.Models.Account
 {
     public class Player
     {
-        public string Name { get; set; }
+        private string name;
+
+        public string Name
+        {
+            get => this.name;
+
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException(ExceptionMessages.PLAYER_NAME_CAN_NOT_BE_EMPTY);
+                }
+                this.name = value;
+            }
+        }
 
         public Wallet Wallet { get; set; }
 
@@ -24,7 +38,7 @@ namespace SlotMachine.Models.Account
         {
             if (amount < 0)
             {
-                throw new Exception(ExceptionMessages.CAN_NOT_BET_NEGATIVE_AMOUNT);
+                throw new ArgumentException(ExceptionMessages.CAN_NOT_BET_NEGATIVE_AMOUNT);
             }
 
             if (this.Wallet.Balance >= amount)
@@ -33,7 +47,7 @@ namespace SlotMachine.Models.Account
             }
             else
             {
-                throw new Exception(string.Format(ExceptionMessages.UNSUFFICIANT_FUNDS, this.Wallet.Balance));
+                throw new ArgumentException(string.Format(ExceptionMessages.UNSUFFICIANT_FUNDS, this.Wallet.Balance));
             }
         }
 
