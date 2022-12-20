@@ -58,7 +58,10 @@ namespace SlotMachine.Models.Account
 
         public void DepositFromWinningBet(decimal amount)
         {
-            this.Wallet.Deposit(amount);
+            if (amount > 0)
+            {
+                this.Wallet.Deposit(amount);
+            }
         }
     }
 }
