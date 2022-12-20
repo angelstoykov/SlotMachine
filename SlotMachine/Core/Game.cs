@@ -46,7 +46,8 @@ namespace SlotMachine.Core
 
             while (player.Wallet.Balance > 0m)
             {
-                writer.WriteLine(OutputMessages.PROMPT_TO_BET);
+                writer.WriteLine(string.Format(OutputMessages.PROMPT_TO_BET, player.Wallet.Balance));
+
                 var isValidAmount = decimal.TryParse(reader.ReadLine(), out var bet);
 
                 if (isValidAmount && player.Wallet.Balance > 0)
