@@ -2,7 +2,7 @@
 
 namespace SlotMachine.Core
 {
-    internal static class PrizeGenerator
+    public static class PrizeGenerator
     {
         public static PrizeItemBase[] GeneratePrizeItems()
         {

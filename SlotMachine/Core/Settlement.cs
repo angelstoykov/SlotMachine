@@ -4,16 +4,9 @@ using SlotMachine.Models.PrizeItems;
 
 namespace SlotMachine.Core
 {
-    internal class Settlement
+    public static class Settlement
     {
-        private IWriter writer = new Writer();
-
-        public Settlement()
-        {
-            this.writer = new Writer();
-        }
-
-        public decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
+        public static decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
         {
             var totalProfitCoefficient = 0m;
 
@@ -39,7 +32,7 @@ namespace SlotMachine.Core
             return totalProfitCoefficient;
         }
 
-        public List<string> EvaluateResult(List<string> slotSpine)
+        public static List<string> EvaluateResult(List<string> slotSpine)
         {
             var winningLines = new List<string>();
 
@@ -54,29 +47,39 @@ namespace SlotMachine.Core
             return winningLines;
         }
 
-        private bool HasWinningLine(string line)
+        private static bool HasWinningLine(string line)
         {
-            return AreAllCharsSame(line) || IsLineContainsAsterix(line);
+            return AreAllCharsSame(line) || IsLineWinningWithWildCard(line);
         }
 
-        private bool IsLineContainsAsterix(string line)
+        private static bool IsLineWinningWithWildCard(string line)
+        {
+            if (IsLineContainsAsterix(line))
+            {
+                var lineWithoutAsterix = line.Replace("*", "");
+                return AreAllCharsSame(lineWithoutAsterix);
+            }
+            return false;
+        }
+
+        private static bool IsLineContainsAsterix(string line)
         {
             return line.Contains("*");
         }
 
-        private bool AreAllCharsSame(string line)
+        private static bool AreAllCharsSame(string line)
         {
             return line.All(c => c == line[0]);
         }
 
-        public decimal CalculateProfit(decimal bet, List<string> winningLines, PrizeItemBase[] prizeItems)
+        public static decimal CalculateProfit(decimal bet, List<string> winningLines, PrizeItemBase[] prizeItems)
         {
             var profitCoefficient = CalculateProfitCoeficient(winningLines, prizeItems);
 
             return Math.Round(bet * profitCoefficient, 2);
         }
 
-        public decimal CalculateProfitCoeficient(List<string> winningLines, PrizeItemBase[] prizeItems)
+        public static decimal CalculateProfitCoeficient(List<string> winningLines, PrizeItemBase[] prizeItems)
         {
             var profitCoefficient = 0m;
 

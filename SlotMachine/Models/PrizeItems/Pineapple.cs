@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlotMachine.Models.PrizeItems
 {
-    internal class Pineapple : PrizeItemBase
+    public class Pineapple : PrizeItemBase
     {
         private const decimal WINNING_COEFFICIENT = 0.8m;
         private const int PROBABILITY_TO_APPEAR = 15; // should appear in 15%
