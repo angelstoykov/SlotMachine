@@ -9,22 +9,26 @@ namespace SlotMachine.Core
 {
     internal class Game : IGame
     {
+        private const string NAME_OF_THE_PLAYER = "Angel";
+
         private IReader reader;
         private IWriter writer;
         private PrizeItemBase[] prizeItems;
+        private SpinGenerator spinGenerator;
 
         public Game()
         {
             this.reader = new Reader();
             this.writer = new Writer();
             this.prizeItems = PrizeGenerator.GeneratePrizeItems();
+            this.spinGenerator = new SpinGenerator();
         }
 
         public PrizeItemBase[] PrizeItems { get => this.prizeItems; }
 
         public void Play()
         {
-            var player = new Player("Angel");
+            var player = new Player(NAME_OF_THE_PLAYER);
 
             while (player.Wallet.Balance == 0m)
             {
@@ -58,7 +62,7 @@ namespace SlotMachine.Core
                         var currentBalance = player.Bet(bet); ;
 
                         // Create result
-                        var slotSpine = CreateSlotSpin();
+                        var slotSpine = spinGenerator.CreateSlotSpin(PrizeItems);
 
                         // Visualize result
                         foreach (var line in slotSpine)
@@ -86,65 +90,6 @@ namespace SlotMachine.Core
             }
 
             writer.WriteLine(OutputMessages.ZERO_BALANCE_PROMPT_TO_DEPOSIT);
-        }
-
-        private List<string> CreateSlotSpin()
-        {
-            var slotSpin = new List<string>();
-
-            for (var i = 0; i < 4; i++)
-            {
-                var slotLine = CreateSlotLine();
-                slotSpin.Add(slotLine);
-            }
-
-            return slotSpin;
-        }
-
-        private string CreateSlotLine()
-        {
-            var slotLine = string.Empty;
-
-            while (slotLine.Length < 3)
-            {
-                var index = GenerateIndex();
-                var randomNumber = GenerateRandomNumberInRange(1, 101);
-
-                var prizeItemRepresentation = PrizeItems[index].Representation;
-                var prizeItemProbabilityToAppear = PrizeItems[index].ProbabilityToAppear;
-
-                if (prizeItemRepresentation == "A" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "B" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "P" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "*" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-            }
-
-            return slotLine;
-        }
-
-        private int GenerateIndex()
-        {
-            var random = new Random();
-
-            return random.Next(0, PrizeItems.Length);
-        }
-
-        private int GenerateRandomNumberInRange(int min, int max)
-        {
-            var random = new Random();
-            return random.Next(min, max);
         }
     }
 }
