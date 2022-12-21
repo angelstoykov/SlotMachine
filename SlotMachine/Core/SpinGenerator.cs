@@ -1,4 +1,5 @@
-﻿using SlotMachine.Models.PrizeItems;
+﻿using SlotMachine.Common;
+using SlotMachine.Models.PrizeItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace SlotMachine.Core
         {
             var slotSpin = new List<string>();
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < Constants.SPIN_LINE_COUNT; i++)
             {
                 var slotLine = CreateSlotLine(prizeItems);
                 slotSpin.Add(slotLine);
@@ -26,10 +27,10 @@ namespace SlotMachine.Core
         {
             var slotLine = string.Empty;
 
-            while (slotLine.Length < 3)
+            while (slotLine.Length < Constants.SLOT_LINE_LENGTH)
             {
                 var index = GenerateRandomNumberInRange(0, prizeItems.Length);
-                var randomNumber = GenerateRandomNumberInRange(1, 101);
+                var randomNumber = GenerateRandomNumberInRange(1, Constants.MAX_PROBABILITY);
 
                 var prizeItemRepresentation = prizeItems[index].Representation;
                 var prizeItemProbabilityToAppear = prizeItems[index].ProbabilityToAppear;

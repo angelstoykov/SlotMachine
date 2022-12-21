@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlotMachine.Common.Messages
 {
-    internal class ExceptionMessages
+    internal static class ExceptionMessages
     {
         public const string CAN_NOT_ADD_ZERO_OR_NEGATIVE_DEPOSIT = "You can not add zero or negative currency value to your wallet.";
 
