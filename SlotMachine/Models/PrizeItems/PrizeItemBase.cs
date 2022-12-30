@@ -1,6 +1,8 @@
-﻿namespace SlotMachine.Models.PrizeItems
+﻿using SlotMachine.Models.PrizeItems.Contracts;
+
+namespace SlotMachine.Models.PrizeItems
 {
-    public abstract class PrizeItemBase
+    public abstract class PrizeItemBase : IPrizeItem
     {
         public PrizeItemBase(string name, string representation, int probabilityToAppear, decimal winningCoefficient)
         {
