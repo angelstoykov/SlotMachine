@@ -15,7 +15,7 @@ namespace SlotMachine.Tests
         [Test]
         public void TestPlayerConstructor()
         {
-            var player = new Player("Angel");
+            var player = new Player(NAME_OF_THE_PLAYER);
 
             Assert.That(player.Name, Is.EqualTo(NAME_OF_THE_PLAYER));
             Assert.Throws<ArgumentException>(() => new Player(null));

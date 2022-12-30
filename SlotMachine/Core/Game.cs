@@ -79,7 +79,11 @@ namespace SlotMachine.Core
                             var profit = Settlement.CalculateProfit(bet, winningLines, PrizeItems);
 
                             player.DepositFromWinningBet(profit);
-                            writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit, player.Wallet.Balance));
+                            writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit));
+                        }
+                        else
+                        {
+                            writer.WriteLine(OutputMessages.NO_WINNING_LINE_MESSAGE);
                         }
                     }
                     catch (Exception e)
