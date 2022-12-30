@@ -1,13 +1,9 @@
 ﻿using SlotMachine.Common.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SlotMachine.Models.Players.Contracts;
 
 namespace SlotMachine.Models.Account
 {
-    public class Player
+    public class Player : IPlayer
     {
         private string name;
 
