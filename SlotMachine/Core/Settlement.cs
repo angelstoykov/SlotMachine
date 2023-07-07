@@ -1,6 +1,4 @@
-﻿using SlotMachine.IO;
-using SlotMachine.IO.Contracts;
-using SlotMachine.Models.PrizeItems;
+﻿using SlotMachine.Models.PrizeItems;
 
 namespace SlotMachine.Core
 {

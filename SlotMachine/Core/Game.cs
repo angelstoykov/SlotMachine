@@ -1,35 +1,32 @@
 ﻿using SlotMachine.Common.Messages;
 using SlotMachine.Core.Contracts;
-using SlotMachine.IO;
 using SlotMachine.IO.Contracts;
-using SlotMachine.Models.Account;
+using SlotMachine.Models.Players.Contracts;
 using SlotMachine.Models.PrizeItems;
 
 namespace SlotMachine.Core
 {
     internal class Game : IGame
     {
-        private const string NAME_OF_THE_PLAYER = "Angel";
-
         private IReader reader;
         private IWriter writer;
         private PrizeItemBase[] prizeItems;
-        private SpinGenerator spinGenerator;
+        private ISpinGenerator spinGenerator;
+        private IPlayer player;
 
-        public Game()
+        public Game(IReader reader, IWriter writer, ISpinGenerator spinGenerator, IPlayer player)
         {
-            this.reader = new Reader();
-            this.writer = new Writer();
+            this.reader = reader;
+            this.writer = writer;
             this.prizeItems = PrizeGenerator.GeneratePrizeItems();
-            this.spinGenerator = new SpinGenerator();
+            this.spinGenerator = spinGenerator;
+            this.player = player;
         }
 
         public PrizeItemBase[] PrizeItems { get => this.prizeItems; }
 
         public void Play()
         {
-            var player = new Player(NAME_OF_THE_PLAYER);
-
             while (player.Wallet.Balance == 0m)
             {
                 writer.WriteLine(OutputMessages.PROMPT_TO_DEPOSIT);
