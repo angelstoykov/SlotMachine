@@ -1,5 +1,6 @@
 ﻿using SlotMachine.Common.Messages;
 using SlotMachine.Models.Players.Contracts;
+using SlotMachine.Models.Wallets.Contracts;
 
 namespace SlotMachine.Models.Account
 {
@@ -21,11 +22,11 @@ namespace SlotMachine.Models.Account
             }
         }
 
-        public Wallet Wallet { get; set; }
+        public IWallet Wallet { get; set; }
 
-        public Player(string name)
+        public Player(string name, IWallet wallet)
         {
-            this.Wallet = new Wallet();
+            this.Wallet = wallet;
 
             this.Name = name;
         }

@@ -1,4 +1,13 @@
-﻿using SlotMachine.Core;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using SlotMachine.Core;
+using SlotMachine.Core.Contracts;
+using SlotMachine.IO;
+using SlotMachine.IO.Contracts;
+using SlotMachine.Models.Account;
+using SlotMachine.Models.Players.Contracts;
+using SlotMachine.Models.Wallets;
+using SlotMachine.Models.Wallets.Contracts;
 
 namespace SlotMachine
 {
@@ -6,8 +15,23 @@ namespace SlotMachine
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-            game.Play();
+            //Game game = new Game();
+            //game.Play();
+
+            IHost host = Host.CreateDefaultBuilder().ConfigureServices(services =>
+                {
+                    services.AddSingleton<IGame, Game>();
+                    services.AddSingleton<IReader, Reader>();
+                    services.AddSingleton<IWriter, Writer>();
+                    services.AddSingleton<ISpinGenerator, SpinGenerator>();
+                    services.AddSingleton<IWallet, Wallet>();
+                    services.AddSingleton<IPlayer, Player>(serviceProvider =>
+                        new Player("Angel", serviceProvider.GetRequiredService<IWallet>()));
+                })
+            .Build();
+
+            var app = host.Services.GetRequiredService<IGame>();
+            app.Play();
         }
     }
 }

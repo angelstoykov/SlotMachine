@@ -1,14 +1,10 @@
 ﻿using SlotMachine.Common;
+using SlotMachine.Core.Contracts;
 using SlotMachine.Models.PrizeItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlotMachine.Core
 {
-    internal class SpinGenerator
+    public class SpinGenerator : ISpinGenerator
     {
         public List<string> CreateSlotSpin(PrizeItemBase[] prizeItems)
         {

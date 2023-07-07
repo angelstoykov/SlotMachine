@@ -1,10 +1,12 @@
-﻿namespace SlotMachine.Models.Players.Contracts
+﻿using SlotMachine.Models.Wallets.Contracts;
+
+namespace SlotMachine.Models.Players.Contracts
 {
     internal interface IPlayer
     {
         string Name { get; set; }
 
-        Wallet Wallet { get; set; }
+        IWallet Wallet { get; set; }
 
         decimal Bet(decimal amount);
 
