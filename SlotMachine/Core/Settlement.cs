@@ -10,12 +10,11 @@ namespace SlotMachine.Core
 
             foreach (var ch in line)
             {
-                foreach (var pi in prizeItems)
+                var r = prizeItems.Where(pi => pi.Representation == ch.ToString()).FirstOrDefault();
+
+                if (r != null)
                 {
-                    if (ch.ToString() == pi.Representation)
-                    {
-                        totalProfitCoefficient += pi.WinningCoefficient;
-                    }
+                    totalProfitCoefficient += r.WinningCoefficient;
                 }
             }
 
