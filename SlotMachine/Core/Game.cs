@@ -3,6 +3,7 @@ using SlotMachine.Core.Contracts;
 using SlotMachine.IO.Contracts;
 using SlotMachine.Models.Players.Contracts;
 using SlotMachine.Models.PrizeItems;
+using SlotMachine.Services.Contracts;
 
 namespace SlotMachine.Core
 {
@@ -13,14 +14,20 @@ namespace SlotMachine.Core
         private PrizeItemBase[] prizeItems;
         private ISpinGenerator spinGenerator;
         private IPlayer player;
+        private ISettlement settlement;
 
-        public Game(IReader reader, IWriter writer, ISpinGenerator spinGenerator, IPlayer player)
+        public Game(IReader reader,
+                    IWriter writer,
+                    ISpinGenerator spinGenerator,
+                    IPlayer player,
+                    ISettlement settlement)
         {
             this.reader = reader;
             this.writer = writer;
             this.prizeItems = PrizeGenerator.GeneratePrizeItems();
             this.spinGenerator = spinGenerator;
             this.player = player;
+            this.settlement = settlement;
         }
 
         public PrizeItemBase[] PrizeItems { get => this.prizeItems; }
@@ -68,12 +75,12 @@ namespace SlotMachine.Core
                         }
 
                         // Evauate result
-                        var winningLines = Settlement.EvaluateResult(slotSpine);
+                        var winningLines = settlement.EvaluateResult(slotSpine);
 
                         if (winningLines.Count > 0)
                         {
-                            var profitCoefficient = Settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
-                            var profit = Settlement.CalculateProfit(bet, winningLines, PrizeItems);
+                            var profitCoefficient = settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
+                            var profit = settlement.CalculateProfit(bet, winningLines, PrizeItems);
 
                             player.DepositFromWinningBet(profit);
                             writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit));
