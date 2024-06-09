@@ -1,0 +1,12 @@
+D:\Projects\SlotMachine\SlotMachine.Common\bin\Debug\net6.0\SlotMachine.Common.deps.json
+D:\Projects\SlotMachine\SlotMachine.Common\bin\Debug\net6.0\SlotMachine.Common.dll
+D:\Projects\SlotMachine\SlotMachine.Common\bin\Debug\net6.0\SlotMachine.Common.pdb
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.AssemblyInfoInputs.cache
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.AssemblyInfo.cs
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.csproj.CoreCompileInputs.cache
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.sourcelink.json
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.dll
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\refint\SlotMachine.Common.dll
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\SlotMachine.Common.pdb
+D:\Projects\SlotMachine\SlotMachine.Common\obj\Debug\net6.0\ref\SlotMachine.Common.dll

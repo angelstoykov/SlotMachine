@@ -8,6 +8,8 @@ using SlotMachine.Models.Account;
 using SlotMachine.Models.Players.Contracts;
 using SlotMachine.Models.Wallets;
 using SlotMachine.Models.Wallets.Contracts;
+using SlotMachine.Services.Contracts;
+using SlotMachine.Services.Settlement;
 
 namespace SlotMachine
 {
@@ -25,6 +27,7 @@ namespace SlotMachine
                     services.AddSingleton<IWriter, Writer>();
                     services.AddSingleton<ISpinGenerator, SpinGenerator>();
                     services.AddSingleton<IWallet, Wallet>();
+                    services.AddSingleton<ISettlement, Settlement>();
                     services.AddSingleton<IPlayer, Player>(serviceProvider =>
                         new Player("Angel", serviceProvider.GetRequiredService<IWallet>()));
                 })
