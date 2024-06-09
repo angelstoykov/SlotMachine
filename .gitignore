@@ -1,5 +1,9 @@
 .vs/
 SlotMachine/bin
 SlotMachine/obj
+SlotMachine.Models/bin
+SlotMachine.Models/obj
+SlotMachine.Services/bin
+SlotMachine.Services/obj
 SlotMachine.Tests/bin
 SlotMachine.Tests/obj
