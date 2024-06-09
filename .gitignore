@@ -1,9 +1,11 @@
 .vs/
 SlotMachine/bin
 SlotMachine/obj
-SlotMachine.Models/bin
-SlotMachine.Models/obj
-SlotMachine.Services/bin
-SlotMachine.Services/obj
+SlotMachine/SlotMachine.Common/bin
+SlotMachine/SlotMachine.Common/obj
+SlotMachine/SlotMachine.Models/bin
+SlotMachine/SlotMachine.Models/obj
+SlotMachine/SlotMachine.Services/bin
+SlotMachine/SlotMachine.Services/obj
 SlotMachine.Tests/bin
 SlotMachine.Tests/obj
