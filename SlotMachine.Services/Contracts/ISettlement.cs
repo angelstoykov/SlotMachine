@@ -1,4 +1,4 @@
-﻿using SlotMachine.Models.PrizeItems;
+﻿using SlotMachine.Models.PrizeItems.Contracts;
 
 namespace SlotMachine.Services.Contracts
 {
@@ -6,8 +6,8 @@ namespace SlotMachine.Services.Contracts
     {
         List<string> EvaluateResult(List<string> slotSpine);
         
-        decimal CalculateProfitCoeficient(List<string> winningLines, PrizeItemBase[] prizeItems);
+        decimal CalculateProfitCoeficient(List<string> winningLines, List<IPrizeItem> prizeItems);
         
-        decimal CalculateProfit(decimal bet, List<string> winningLines, PrizeItemBase[] prizeItems);
+        decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems);
     }
 }
