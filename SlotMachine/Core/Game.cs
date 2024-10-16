@@ -3,6 +3,7 @@ using SlotMachine.Core.Contracts;
 using SlotMachine.IO.Contracts;
 using SlotMachine.Models.Players.Contracts;
 using SlotMachine.Models.PrizeItems;
+using SlotMachine.Models.PrizeItems.Contracts;
 using SlotMachine.Services.Contracts;
 
 namespace SlotMachine.Core
@@ -11,7 +12,7 @@ namespace SlotMachine.Core
     {
         private IReader reader;
         private IWriter writer;
-        private PrizeItemBase[] prizeItems;
+        private List<IPrizeItem> prizeItems;
         private ISpinGenerator spinGenerator;
         private IPlayer player;
         private ISettlement settlement;
@@ -30,7 +31,7 @@ namespace SlotMachine.Core
             this.settlement = settlement;
         }
 
-        public PrizeItemBase[] PrizeItems { get => this.prizeItems; }
+        public List<IPrizeItem> PrizeItems { get => this.prizeItems; }
 
         public void Play()
         {

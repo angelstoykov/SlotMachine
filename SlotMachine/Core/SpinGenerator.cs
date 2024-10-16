@@ -1,12 +1,12 @@
 ﻿using SlotMachine.Common;
 using SlotMachine.Core.Contracts;
-using SlotMachine.Models.PrizeItems;
+using SlotMachine.Models.PrizeItems.Contracts;
 
 namespace SlotMachine.Core
 {
     public class SpinGenerator : ISpinGenerator
     {
-        public List<string> CreateSlotSpin(PrizeItemBase[] prizeItems)
+        public List<string> CreateSlotSpin(List<IPrizeItem> prizeItems)
         {
             var slotSpin = new List<string>();
 
@@ -19,13 +19,13 @@ namespace SlotMachine.Core
             return slotSpin;
         }
 
-        private string CreateSlotLine(PrizeItemBase[] prizeItems)
+        private string CreateSlotLine(List<IPrizeItem> prizeItems)
         {
             var slotLine = string.Empty;
 
             while (slotLine.Length < Constants.SLOT_LINE_LENGTH)
             {
-                var index = GenerateRandomNumberInRange(0, prizeItems.Length);
+                var index = GenerateRandomNumberInRange(0, prizeItems.Count);
                 var randomNumber = GenerateRandomNumberInRange(1, Constants.MAX_PROBABILITY);
 
                 var prizeItemRepresentation = prizeItems[index].Representation;
