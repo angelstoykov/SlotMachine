@@ -1,11 +1,12 @@
 ﻿using SlotMachine.Models.PrizeItems;
+using SlotMachine.Models.PrizeItems.Contracts;
 using SlotMachine.Services.Contracts;
 
 namespace SlotMachine.Services.Settlement
 {
     public class Settlement : ISettlement
     {
-        private decimal CalculateWinningLineCoefficient(string line, PrizeItemBase[] prizeItems)
+        private decimal CalculateWinningLineCoefficient(string line, List<IPrizeItem> prizeItems)
         {
             var totalProfitCoefficient = 0m;
 
@@ -62,14 +63,14 @@ namespace SlotMachine.Services.Settlement
             return line.All(c => c == line[0]);
         }
 
-        public decimal CalculateProfit(decimal bet, List<string> winningLines, PrizeItemBase[] prizeItems)
+        public decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems)
         {
             var profitCoefficient = CalculateProfitCoeficient(winningLines, prizeItems);
 
             return Math.Round(bet * profitCoefficient, 2);
         }
 
-        public decimal CalculateProfitCoeficient(List<string> winningLines, PrizeItemBase[] prizeItems)
+        public decimal CalculateProfitCoeficient(List<string> winningLines, List<IPrizeItem> prizeItems)
         {
             var profitCoefficient = 0m;
 

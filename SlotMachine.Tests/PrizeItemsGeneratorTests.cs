@@ -1,6 +1,7 @@
 using System;
 using SlotMachine.Core;
 using SlotMachine.Models.PrizeItems;
+using SlotMachine.Models.PrizeItems.Contracts;
 
 namespace SlotMachine.Tests
 {
@@ -9,7 +10,7 @@ namespace SlotMachine.Tests
         [Test]
         public void TestPrizeItemsGenerator()
         {
-            PrizeItemBase[] actualItems = PrizeGenerator.GeneratePrizeItems();
+            List<IPrizeItem> actualItems = PrizeGenerator.GeneratePrizeItems();
             var actualApple = actualItems.First(a => a.Name == "Apple");
             var actualBanana = actualItems.First(a => a.Name == "Banana");
             var actualPineapple = actualItems.First(a => a.Name == "Pineapple");

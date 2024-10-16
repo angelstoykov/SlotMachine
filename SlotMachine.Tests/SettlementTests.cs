@@ -1,10 +1,20 @@
-﻿using SlotMachine.Core;
-using SlotMachine.Models.PrizeItems;
+﻿using Moq;
+using SlotMachine.Core;
+using SlotMachine.Models.PrizeItems.Contracts;
+using SlotMachine.Services.Contracts;
+using SlotMachine.Services.Settlement;
 
 namespace SlotMachine.Tests
 {
     internal class SettlementTests
     {
+        private readonly ISettlement _settlement;
+
+        public SettlementTests()
+        {
+            _settlement = new Settlement();
+        }
+
         [Test]
         public void CalculateProfitTest()
         {
@@ -15,10 +25,10 @@ namespace SlotMachine.Tests
             var actualWinningLinesWithSameLetters = GetWinningLinesSameLetters();
             var actualWinningLinesWithAsterix = GetWinningLinesWithAsterix();
 
-            PrizeItemBase[] prizeItems = PrizeGenerator.GeneratePrizeItems();
+            List<IPrizeItem> prizeItems = PrizeGenerator.GeneratePrizeItems();
 
-            var profitSameLetters = Settlement.CalculateProfit(bet, actualWinningLinesWithSameLetters, prizeItems);
-            var profitWithAsterix = Settlement.CalculateProfit(bet, actualWinningLinesWithAsterix, prizeItems);
+            var profitSameLetters = _settlement.CalculateProfit(bet, actualWinningLinesWithSameLetters, prizeItems);
+            var profitWithAsterix = _settlement.CalculateProfit(bet, actualWinningLinesWithAsterix, prizeItems);
 
             Assert.That(Math.Round((bet * expectedWinningCoefficientSameLetters), 2), Is.EqualTo(profitSameLetters));
             Assert.That(Math.Round((bet * expectedWinningCoefficientWithAsterix), 2), Is.EqualTo(profitWithAsterix));
@@ -29,13 +39,13 @@ namespace SlotMachine.Tests
         {
             const decimal expectedWinningCoefficientSameLetters = 5.4m;
             const decimal expectedWinningCoefficientWithAsterix = 4.6m;
-            PrizeItemBase[] prizeItems = PrizeGenerator.GeneratePrizeItems();
+            List<IPrizeItem> prizeItems = PrizeGenerator.GeneratePrizeItems();
 
             var actualWinningLines = GetWinningLinesSameLetters();
-            var actualWinningCoefficient = Settlement.CalculateProfitCoeficient(actualWinningLines, prizeItems);
+            var actualWinningCoefficient = _settlement.CalculateProfitCoeficient(actualWinningLines, prizeItems);
 
             var actualWinningLinesWithAsterix = GetWinningLinesWithAsterix();
-            var actualWinningCoefficientWithAsterix = Settlement.CalculateProfitCoeficient(actualWinningLinesWithAsterix, prizeItems);
+            var actualWinningCoefficientWithAsterix = _settlement.CalculateProfitCoeficient(actualWinningLinesWithAsterix, prizeItems);
 
             Assert.That(actualWinningCoefficient, Is.EqualTo(expectedWinningCoefficientSameLetters));
             Assert.That(actualWinningCoefficientWithAsterix, Is.EqualTo(expectedWinningCoefficientWithAsterix));
@@ -48,9 +58,9 @@ namespace SlotMachine.Tests
             var actualWinningLinesWithAsterix = GetWinningLinesWithAsterix();
             var actualNoWinningLines = GetNoWinningLines();
 
-            var expectedLinesWithSameLetters = Settlement.EvaluateResult(actualLinesWithSameLetters);
-            var expectedLinesWithWithAsterix = Settlement.EvaluateResult(actualWinningLinesWithAsterix);
-            var expectedNoWinningLinesCount = Settlement.EvaluateResult(actualNoWinningLines).Count;
+            var expectedLinesWithSameLetters = _settlement.EvaluateResult(actualLinesWithSameLetters);
+            var expectedLinesWithWithAsterix = _settlement.EvaluateResult(actualWinningLinesWithAsterix);
+            var expectedNoWinningLinesCount = _settlement.EvaluateResult(actualNoWinningLines).Count;
 
             CollectionAssert.AreEqual(expectedLinesWithSameLetters, actualLinesWithSameLetters);
             Assert.That(expectedLinesWithSameLetters.Count, Is.EqualTo(actualLinesWithSameLetters.Count));
