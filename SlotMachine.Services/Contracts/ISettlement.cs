@@ -8,6 +8,6 @@ namespace SlotMachine.Services.Contracts
         
         decimal CalculateProfitCoeficient(List<string> winningLines, List<IPrizeItem> prizeItems);
         
-        decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems);
+        decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems, decimal profitCoefficient);
     }
 }

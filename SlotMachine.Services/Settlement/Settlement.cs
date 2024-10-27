@@ -63,10 +63,8 @@ namespace SlotMachine.Services.Settlement
             return line.All(c => c == line[0]);
         }
 
-        public decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems)
+        public decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems, decimal profitCoefficient)
         {
-            var profitCoefficient = CalculateProfitCoeficient(winningLines, prizeItems);
-
             return Math.Round(bet * profitCoefficient, 2);
         }
 

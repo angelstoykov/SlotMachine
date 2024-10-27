@@ -87,7 +87,7 @@ namespace SlotMachine.Core
                         if (winningLines.Count > 0)
                         {
                             var profitCoefficient = settlement.CalculateProfitCoeficient(winningLines, PrizeItems);
-                            var profit = settlement.CalculateProfit(bet, winningLines, PrizeItems);
+                            var profit = settlement.CalculateProfit(bet, winningLines, PrizeItems, profitCoefficient);
 
                             player.DepositFromWinningBet(profit);
                             writer.WriteLine(string.Format(OutputMessages.WINNING_MESSAGE, profitCoefficient, profit));
