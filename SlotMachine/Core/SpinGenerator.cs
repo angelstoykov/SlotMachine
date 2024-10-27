@@ -31,19 +31,7 @@ namespace SlotMachine.Core
                 var prizeItemRepresentation = prizeItems[index].Representation;
                 var prizeItemProbabilityToAppear = prizeItems[index].ProbabilityToAppear;
 
-                if (prizeItemRepresentation == "A" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "B" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "P" && prizeItemProbabilityToAppear >= randomNumber)
-                {
-                    slotLine += prizeItemRepresentation;
-                }
-                else if (prizeItemRepresentation == "*" && prizeItemProbabilityToAppear >= randomNumber)
+                if (prizeItemProbabilityToAppear >= randomNumber)
                 {
                     slotLine += prizeItemRepresentation;
                 }

@@ -7,7 +7,7 @@
 
         public WildCard()
     :       this(typeof(WildCard).Name,
-                 typeof(WildCard).Name.Substring(0, 1).ToUpper())
+                 "*")
         {
         }
 
