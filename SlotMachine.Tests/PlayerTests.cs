@@ -3,6 +3,7 @@ using FluentAssertions;
 using SlotMachine.Models.Account;
 using SlotMachine.Models.Wallets;
 using SlotMachine.Models.Wallets.Contracts;
+using SlotMachine.Tests.Extensions;
 using System;
 using Xunit;
 
@@ -35,26 +36,27 @@ namespace SlotMachine.Tests
         {
             Action act = () => new Player(null, null);
 
-
             act.Should().Throw<ArgumentException>();
         }
 
         [Fact]
-        public void TestPlayerBet()
+        public void OnValidBetWalletBalanceIsCorrect()
         {
-            //const decimal initialWalletDeposit = 100m;
             var initialWalletDeposit = fixture.Create<decimal>();
 
-            const decimal regularBet = 29.30m;
-            const decimal negativeBet = -33.28m;
-            const decimal moreThanIHaveBet = decimal.MinValue;
-
+            // Create bet less or equal to wallet balance
+            var regularBet = fixture.CreateDecimalInRange(0, initialWalletDeposit);
+            
             var player = new Player(nameOfThePlayer, wallet);
 
             player.Deposit(initialWalletDeposit);
             player.Bet(regularBet);
 
             player.Wallet.Balance.Should().Be(initialWalletDeposit - regularBet);
+
+            // TODO: Create other scenarios tests
+            //const decimal negativeBet = -33.28m;
+            //const decimal moreThanIHaveBet = decimal.MinValue;
 
             //Assert.Throws<ArgumentException>(() => player.Bet(negativeBet));
             //Assert.Throws<ArgumentException>(() => player.Bet(moreThanIHaveBet));
