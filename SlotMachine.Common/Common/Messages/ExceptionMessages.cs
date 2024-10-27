@@ -9,5 +9,9 @@
         public const string UNSUFFICIANT_FUNDS = "Unsufficiend funds for that bet in your wallet. Your balance is: {0:F2}";
 
         public const string PLAYER_NAME_CAN_NOT_BE_EMPTY = "Player's name cannot be empty.";
+
+        public const string UNSUCCESSFUL_DEPOSIT_PARSE = "Please deposit valid amount.";
+
+        public const string UNSUCCESSFUL_BET_PARSE = "Please add valid bet amount.";
     }
 }

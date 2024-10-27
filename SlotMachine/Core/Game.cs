@@ -17,6 +17,8 @@ namespace SlotMachine.Core
         private IPlayer player;
         private ISettlement settlement;
 
+        private const decimal ZERO_BALANCE = 0m;
+
         public Game(IReader reader,
                     IWriter writer,
                     ISpinGenerator spinGenerator,
@@ -35,7 +37,7 @@ namespace SlotMachine.Core
 
         public void Play()
         {
-            while (player.Wallet.Balance == 0m)
+            while (player.Wallet.Balance == ZERO_BALANCE)
             {
                 writer.WriteLine(OutputMessages.PROMPT_TO_DEPOSIT);
 
@@ -51,9 +53,13 @@ namespace SlotMachine.Core
                         writer.WriteLine(e.Message);
                     }
                 }
+                else
+                {
+                    writer.WriteLine(ExceptionMessages.UNSUCCESSFUL_DEPOSIT_PARSE);
+                }
             }
 
-            while (player.Wallet.Balance > 0m)
+            while (player.Wallet.Balance > ZERO_BALANCE)
             {
                 writer.WriteLine(string.Format(OutputMessages.PROMPT_TO_BET, player.Wallet.Balance));
 
@@ -95,6 +101,10 @@ namespace SlotMachine.Core
                     {
                         writer.WriteLine(e.Message);
                     }
+                }
+                else
+                {
+                    writer.WriteLine(ExceptionMessages.UNSUCCESSFUL_BET_PARSE);
                 }
             }
 
