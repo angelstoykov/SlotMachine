@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
+using SlotMachine.Common.Messages;
 using SlotMachine.Models.Account;
 using SlotMachine.Models.Wallets;
 using SlotMachine.Models.Wallets.Contracts;
@@ -53,13 +54,44 @@ namespace SlotMachine.Tests
             player.Bet(regularBet);
 
             player.Wallet.Balance.Should().Be(initialWalletDeposit - regularBet);
+        }
 
-            // TODO: Create other scenarios tests
-            //const decimal negativeBet = -33.28m;
-            //const decimal moreThanIHaveBet = decimal.MinValue;
+        [Fact]
+        public void OnNegativeBetThrowsException()
+        {
+            var initialWalletDeposit = fixture.Create<decimal>();
 
-            //Assert.Throws<ArgumentException>(() => player.Bet(negativeBet));
-            //Assert.Throws<ArgumentException>(() => player.Bet(moreThanIHaveBet));
+            // Create bet less than zero
+            var negativeBet = fixture.CreateDecimalInRange(-1000m, -1m);
+
+            var player = new Player(nameOfThePlayer, wallet);
+
+            player.Deposit(initialWalletDeposit);
+            var act = () => player.Bet(negativeBet);
+
+            act.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(ExceptionMessages.CAN_NOT_BET_NEGATIVE_AMOUNT);
+        }
+
+        [Fact]
+        public void OnBetBiggerThanWalletBalanceThrowsException()
+        {
+            var initialWalletDeposit = fixture.Create<decimal>();
+
+            // Create bet more than wallet balance
+            var moreThanIHaveBet = fixture.CreateDecimalInRange(initialWalletDeposit + 1, decimal.MaxValue);
+
+            var player = new Player(nameOfThePlayer, wallet);
+            player.Deposit(initialWalletDeposit);
+
+            var expectedExceptionMessage = string.Format(ExceptionMessages.UNSUFFICIANT_FUNDS, player.Wallet.Balance);
+
+            var act = () => player.Bet(moreThanIHaveBet);
+
+            act.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(expectedExceptionMessage);
         }
 
         //[Test]
