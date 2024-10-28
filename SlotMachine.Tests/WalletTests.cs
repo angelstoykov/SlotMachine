@@ -1,40 +1,96 @@
-﻿namespace SlotMachine.Tests
+﻿using AutoFixture;
+using FluentAssertions;
+using SlotMachine.Common.Messages;
+using SlotMachine.Models.Account;
+using SlotMachine.Models.Wallets;
+using SlotMachine.Models.Wallets.Contracts;
+using SlotMachine.Tests.Extensions;
+using System;
+using Xunit;
+
+namespace SlotMachine.Tests
 {
-    internal class WalletTests
+    public class WalletTests
     {
-        //[Test]
-        //public void WalletConstructorTest()
-        //{
-        //    const decimal initialWalletBalance = 0m;
+        private string nameOfThePlayer = string.Empty;
+        private Fixture fixture;
+        private IWallet wallet;
 
-        //    var wallet = new Wallet();
+        public WalletTests()
+        {
+            this.fixture = new Fixture();
+            this.wallet = new Wallet();
 
-        //    Assert.That(wallet.Balance, Is.EqualTo(initialWalletBalance));
-        //}
+            this.nameOfThePlayer = fixture.Create<string>();
+        }
 
-        //[Test]
-        //public void WalletDepositTest()
-        //{
-        //    const decimal negativeDeposit = -99.90m;
+        [Fact]
+        public void OnWalletInitializationBalanceIsZero()
+        {
+            var initialWalletBalance = 0m;
 
-        //    var wallet = new Wallet();
+            var wallet = new Wallet();
 
-        //    Assert.Throws<ArgumentException>(() => wallet.Deposit(negativeDeposit));
-        //}
+            wallet.Balance.Should().Be(initialWalletBalance);
+        }
 
-        //[Test]
-        //public void WalletWithdrawBet()
-        //{
-        //    const decimal initialDeposit = 88.90m;
-        //    const decimal regularBet = 12.63m;
-        //    const decimal expectedBalance = initialDeposit - regularBet;
+        [Fact]
+        public void OnWalletDepositBalanceIsCorrect()
+        {
+            var depositAmount = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
 
-        //    var wallet = new Wallet();
-        //    wallet.Deposit(initialDeposit);
-        //    wallet.WithdrawBet(regularBet);
+            var wallet = new Wallet();
 
-        //    Assert.That(wallet.Balance, Is.EqualTo(expectedBalance));
-        //    Assert.That(wallet.Checkout, Is.EqualTo(expectedBalance));
-        //}
+            wallet.Deposit(depositAmount);
+
+            wallet.Balance.Should().Be(depositAmount);
+        }
+
+        [Fact]
+        public void OnWalletDepositNegativeAmountThrowsException()
+        {
+            var wallet = new Wallet();
+            var negativeAmount = fixture.CreateDecimalInRange(decimal.MinValue, -1m);
+
+            var act = () => wallet.Deposit(negativeAmount);
+
+            act.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(ExceptionMessages.CAN_NOT_ADD_ZERO_OR_NEGATIVE_DEPOSIT);
+        }
+
+        [Fact]
+        public void PlayerWalletDepositFromWinningBetBalanceIsCorrect()
+        {
+            var initialWalletDeposit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
+            var regularBet = fixture.CreateDecimalInRange(1m, initialWalletDeposit);
+            var profit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
+
+            var player = new Player(nameOfThePlayer, wallet);
+            var expectedBalance = initialWalletDeposit - regularBet + profit;
+
+            player.Deposit(initialWalletDeposit);
+            player.Bet(regularBet);
+            player.DepositFromWinningBet(profit);
+
+            player.Wallet.Balance.Should().Be(expectedBalance);
+        }
+
+
+        [Fact]
+        public void OnWalletWithdrawBetBalanceIsCorrect()
+        {
+            var initialWalletDeposit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
+            var regularBet = fixture.CreateDecimalInRange(1m, initialWalletDeposit);
+            var expectedBalance = initialWalletDeposit - regularBet;
+
+            wallet.Deposit(initialWalletDeposit);
+            wallet.WithdrawBet(regularBet);
+            var checkoutReturnValue = wallet.Checkout();
+            
+
+            wallet.Balance.Should().Be(expectedBalance);
+            wallet.Balance.Should().Be(checkoutReturnValue);
+        }
     }
 }

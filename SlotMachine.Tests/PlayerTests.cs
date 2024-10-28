@@ -93,57 +93,5 @@ namespace SlotMachine.Tests
                 .Throw<ArgumentException>()
                 .WithMessage(expectedExceptionMessage);
         }
-
-        [Fact]
-        public void OnWalletInitializationBalanceIsZero()
-        {
-            var initialWalletBalance = 0m;
-            
-            var wallet = new Wallet();
-
-            wallet.Balance.Should().Be(initialWalletBalance);
-        }
-
-        [Fact]
-        public void OnWalletDepositBalanceIsCorrect()
-        {
-            var depositAmount = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
-
-            var wallet = new Wallet();
-
-            wallet.Deposit(depositAmount);
-
-            wallet.Balance.Should().Be(depositAmount);
-        }
-
-        [Fact]
-        public void OnWalletDepositNegativeAmountThrowsException()
-        {
-            var wallet = new Wallet();
-            var negativeAmount = fixture.CreateDecimalInRange(decimal.MinValue, -1m);
-
-            var act = () => wallet.Deposit(negativeAmount);
-
-            act.Should()
-                .Throw<ArgumentException>()
-                .WithMessage(ExceptionMessages.CAN_NOT_ADD_ZERO_OR_NEGATIVE_DEPOSIT);
-        }
-
-        [Fact]
-        public void PlayerWalletDepositFromWinningBetBalanceIsCorrect()
-        {
-            var initialWalletDeposit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
-            var regularBet = fixture.CreateDecimalInRange(1m, initialWalletDeposit);
-            var profit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
-
-            var player = new Player(nameOfThePlayer, wallet);
-            var expectedBalance = initialWalletDeposit - regularBet + profit;
-
-            player.Deposit(initialWalletDeposit);
-            player.Bet(regularBet);
-            player.DepositFromWinningBet(profit);
-
-            player.Wallet.Balance.Should().Be(expectedBalance);
-        }
     }
 }
