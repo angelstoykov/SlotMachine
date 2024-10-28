@@ -62,7 +62,7 @@ namespace SlotMachine.Tests
             var initialWalletDeposit = fixture.Create<decimal>();
 
             // Create bet less than zero
-            var negativeBet = fixture.CreateDecimalInRange(-1000m, -1m);
+            var negativeBet = fixture.CreateDecimalInRange(decimal.MinValue, -1m);
 
             var player = new Player(nameOfThePlayer, wallet);
 
@@ -94,40 +94,56 @@ namespace SlotMachine.Tests
                 .WithMessage(expectedExceptionMessage);
         }
 
-        //[Test]
-        //public void TestPlayerWalletDeposit()
-        //{
-        //    const decimal initialWalletBalance = 0;
-        //    const decimal walletNegativeDeposit = -66.66m;
-        //    const decimal walletPositiveDepositTestDeposit = 99.99m;
+        [Fact]
+        public void OnWalletInitializationBalanceIsZero()
+        {
+            var initialWalletBalance = 0m;
+            
+            var wallet = new Wallet();
 
-        //    var wallet = new Wallet();
+            wallet.Balance.Should().Be(initialWalletBalance);
+        }
 
-        //    Assert.That(wallet.Balance, Is.EqualTo(initialWalletBalance));
-        //    Assert.Throws<ArgumentException>(() => wallet.Deposit(walletNegativeDeposit));
+        [Fact]
+        public void OnWalletDepositBalanceIsCorrect()
+        {
+            var depositAmount = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
 
-        //    wallet.Deposit(walletPositiveDepositTestDeposit);
+            var wallet = new Wallet();
 
-        //    Assert.That(wallet.Balance, Is.EqualTo(walletPositiveDepositTestDeposit));
-        //}
+            wallet.Deposit(depositAmount);
 
-        //[Test]
-        //public void TestPlayerWalletDepositFromWinningBet()
-        //{
-        //    // TODO: Refactor, check if it is still accurate
-        //    return;
-        //    const decimal initialWalletDeposit = 53.33m;
-        //    const decimal regularBet = 2.9m;
-        //    const decimal profit = 77.77m;
+            wallet.Balance.Should().Be(depositAmount);
+        }
 
-        //    var player = new Player(nameOfThePlayer, wallet);
-        //    var expectedBalance = initialWalletDeposit - regularBet + profit;
+        [Fact]
+        public void OnWalletDepositNegativeAmountThrowsException()
+        {
+            var wallet = new Wallet();
+            var negativeAmount = fixture.CreateDecimalInRange(decimal.MinValue, -1m);
 
-        //    player.Deposit(initialWalletDeposit);
-        //    player.Bet(regularBet);
-        //    player.DepositFromWinningBet(profit);
+            var act = () => wallet.Deposit(negativeAmount);
 
-        //    Assert.That(player.Wallet.Balance, Is.EqualTo(expectedBalance));
-        //}
+            act.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(ExceptionMessages.CAN_NOT_ADD_ZERO_OR_NEGATIVE_DEPOSIT);
+        }
+
+        [Fact]
+        public void PlayerWalletDepositFromWinningBetBalanceIsCorrect()
+        {
+            var initialWalletDeposit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
+            var regularBet = fixture.CreateDecimalInRange(1m, initialWalletDeposit);
+            var profit = fixture.CreateDecimalInRange(1m, decimal.MaxValue);
+
+            var player = new Player(nameOfThePlayer, wallet);
+            var expectedBalance = initialWalletDeposit - regularBet + profit;
+
+            player.Deposit(initialWalletDeposit);
+            player.Bet(regularBet);
+            player.DepositFromWinningBet(profit);
+
+            player.Wallet.Balance.Should().Be(expectedBalance);
+        }
     }
 }
