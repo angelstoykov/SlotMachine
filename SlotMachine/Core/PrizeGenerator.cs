@@ -6,10 +6,11 @@ namespace SlotMachine.Core
 {
     public static class PrizeGenerator
     {
+        private const string targetNamespace = "SlotMachine.Models.PrizeItems";
+
         public static List<IPrizeItem> GeneratePrizeItems()
         {
-            var targetNamespace = "SlotMachine.Models.PrizeItems";
-            var assemblyPath = @"D:\Projects\SlotMachine\SlotMachine.Models\bin\Debug\net6.0\SlotMachine.Models.dll";
+            var assemblyPath = $"{AppDomain.CurrentDomain.BaseDirectory}SlotMachine.Models.dll";
             var prizeItemsTypes = GetPrizeItemTypesInNamespace(targetNamespace, assemblyPath);
             var prizeItems = new List<IPrizeItem>();
 
