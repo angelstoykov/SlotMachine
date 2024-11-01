@@ -6,8 +6,8 @@ namespace SlotMachine.Services.Contracts
     {
         List<string> EvaluateResult(List<string> slotSpine);
         
-        decimal CalculateProfitCoeficient(List<string> winningLines, List<IPrizeItem> prizeItems);
+        decimal CalculateProfitCoeficient(List<string> winningLines, IList<IPrizeItem> prizeItems);
         
-        decimal CalculateProfit(decimal bet, List<string> winningLines, List<IPrizeItem> prizeItems, decimal profitCoefficient);
+        decimal CalculateProfit(decimal bet, List<string> winningLines, IList<IPrizeItem> prizeItems, decimal profitCoefficient);
     }
 }

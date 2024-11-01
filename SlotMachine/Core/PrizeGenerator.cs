@@ -1,14 +1,15 @@
-﻿using SlotMachine.Models.PrizeItems;
+﻿using SlotMachine.Core.Contracts;
+using SlotMachine.Models.PrizeItems;
 using SlotMachine.Models.PrizeItems.Contracts;
 using System.Reflection;
 
 namespace SlotMachine.Core
 {
-    public static class PrizeGenerator
+    public class PrizeGenerator : IPrizeGenerator
     {
         private const string targetNamespace = "SlotMachine.Models.PrizeItems";
 
-        public static List<IPrizeItem> GeneratePrizeItems()
+        public IList<IPrizeItem> GeneratePrizeItems()
         {
             var assemblyPath = $"{AppDomain.CurrentDomain.BaseDirectory}SlotMachine.Models.dll";
             var prizeItemsTypes = GetPrizeItemTypesInNamespace(targetNamespace, assemblyPath);
@@ -34,7 +35,7 @@ namespace SlotMachine.Core
             return prizeItems;
         }
 
-        public static IPrizeItem CreateInstance(Type type)
+        private IPrizeItem CreateInstance(Type type)
         {
             if (typeof(IPrizeItem).IsAssignableFrom(type) && !type.IsAbstract)
             {
@@ -44,7 +45,7 @@ namespace SlotMachine.Core
             throw new ArgumentException("The type must implement IPrizeItem and not be abstract.");
         }
 
-        public static Type[] GetPrizeItemTypesInNamespace(string targetNamespace, string assemblyPath)
+        private Type[] GetPrizeItemTypesInNamespace(string targetNamespace, string assemblyPath)
         {
             Assembly assembly = Assembly.LoadFrom(assemblyPath);
             

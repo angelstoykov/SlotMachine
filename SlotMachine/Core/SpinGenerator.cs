@@ -6,7 +6,7 @@ namespace SlotMachine.Core
 {
     public class SpinGenerator : ISpinGenerator
     {
-        public List<string> CreateSlotSpin(List<IPrizeItem> prizeItems)
+        public List<string> CreateSlotSpin(IList<IPrizeItem> prizeItems)
         {
             var slotSpin = new List<string>();
 
@@ -19,7 +19,7 @@ namespace SlotMachine.Core
             return slotSpin;
         }
 
-        private string CreateSlotLine(List<IPrizeItem> prizeItems)
+        private string CreateSlotLine(IList<IPrizeItem> prizeItems)
         {
             var slotLine = string.Empty;
 

@@ -2,8 +2,8 @@
 
 namespace SlotMachine.Core.Contracts
 {
-    public interface ISpinGenerator
+    public interface IPrizeGenerator
     {
-        List<string> CreateSlotSpin(IList<IPrizeItem> prizeItems);
+        IList<IPrizeItem> GeneratePrizeItems();
     }
 }

@@ -12,7 +12,8 @@ namespace SlotMachine.Core
     {
         private IReader reader;
         private IWriter writer;
-        private List<IPrizeItem> prizeItems;
+        private IPrizeGenerator prizeGenerator;
+        private IList<IPrizeItem> prizeItems;
         private ISpinGenerator spinGenerator;
         private IPlayer player;
         private ISettlement settlement;
@@ -21,22 +22,29 @@ namespace SlotMachine.Core
 
         public Game(IReader reader,
                     IWriter writer,
+                    IPrizeGenerator prizeGenerator,
                     ISpinGenerator spinGenerator,
                     IPlayer player,
                     ISettlement settlement)
         {
             this.reader = reader;
             this.writer = writer;
-            this.prizeItems = PrizeGenerator.GeneratePrizeItems();
+            this.prizeGenerator = prizeGenerator;
             this.spinGenerator = spinGenerator;
             this.player = player;
             this.settlement = settlement;
         }
 
-        public List<IPrizeItem> PrizeItems { get => this.prizeItems; }
+        public IList<IPrizeItem> PrizeItems
+        {
+            get => this.prizeItems;
+            set => this.prizeItems = value;
+        }
 
         public void Play()
         {
+            PrizeItems = prizeGenerator.GeneratePrizeItems();
+
             while (player.Wallet.Balance == ZERO_BALANCE)
             {
                 writer.WriteLine(OutputMessages.PROMPT_TO_DEPOSIT);

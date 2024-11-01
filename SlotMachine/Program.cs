@@ -28,6 +28,7 @@ namespace SlotMachine
                     services.AddSingleton<ISpinGenerator, SpinGenerator>();
                     services.AddSingleton<IWallet, Wallet>();
                     services.AddSingleton<ISettlement, Settlement>();
+                    services.AddSingleton<IPrizeGenerator, PrizeGenerator>();
                     services.AddSingleton<IPlayer, Player>(serviceProvider =>
                         new Player("Angel", serviceProvider.GetRequiredService<IWallet>()));
                 })
